@@ -7,12 +7,9 @@ chmod 600 /home/ritesh/.ssh/authorized_keys;
 chown ritesh:ritesh /home/ritesh/.ssh -R;
 echo "ritesh  ALL=(ALL)  NOPASSWD:ALL" > /etc/sudoers.d/ritesh;
 chmod 440 /etc/sudoers.d/ritesh;
-####################################################################
-mkdir /mederma;
-mkfs.xfs /dev/sdc;
-echo "/dev/sdc  /mederma  xfs  defaults 0 0" >> /etc/fstab;
-mount -a;
+
 ############################################################### Installation of SonarQube ##############################################################
+
 yum install -y zip unzip vim wget
 useradd -s /bin/bash -m sonar;
 echo "Password@#795" | passwd sonar --stdin;
