@@ -44,38 +44,6 @@ echo "demo  ALL=(ALL)  NOPASSWD:ALL" >> /etc/sudoers
 yum install -y https://packages.microsoft.com/config/rhel/8/packages-microsoft-prod.rpm
 yum install -y azure-cli
 
-#################################### Installing Node Exporter #####################################
-
-useradd --system --no-create-home --shell /bin/false node_exporter
-cd /opt/ && wget https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
-tar -xvf node_exporter-1.6.1.linux-amd64.tar.gz
-sudo mv node_exporter-1.6.1.linux-amd64/node_exporter /usr/local/bin/
-rm -rf node_exporter*
-
-cat > /etc/systemd/system/node_exporter.service <<END_FOR_SCRIPT
-[Unit]
-Description=Node Exporter
-Wants=network-online.target
-After=network-online.target
-
-StartLimitIntervalSec=500
-StartLimitBurst=5
-
-[Service]
-User=node_exporter
-Group=node_exporter
-Type=simple
-Restart=on-failure
-RestartSec=5s
-ExecStart=/usr/local/bin/node_exporter --collector.logind
-
-[Install]
-WantedBy=multi-user.target
-END_FOR_SCRIPT
-
-systemctl enable node_exporter
-systemctl start node_exporter
-
 ############# Install kubectl #############
 
 curl -LO https://dl.k8s.io/release/v1.29.2/bin/linux/amd64/kubectl
